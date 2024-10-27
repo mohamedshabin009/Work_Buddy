@@ -1,5 +1,4 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { User } from 'src/user/user.entity';
 
 export class CreateLeaveDto {
   @IsNotEmpty()
@@ -24,8 +23,6 @@ export class CreateLeaveDto {
   @IsEnum(['APPROVED', 'REJECT', 'PENDING'])
   status: 'APPROVED' | 'REJECT' | 'PENDING' = 'PENDING';
 
-  @IsDateString()
-  @IsNotEmpty()
   created_At: Date;
 }
 
