@@ -26,8 +26,12 @@ export class Wfh {
   @Column()
   reason: string;
 
-  @Column({ type: 'enum', enum: ['APPROVED', 'REJECT'], default: 'PENDING' })
-  status: 'APPROVED' | 'REJECT';
+  @Column({
+    type: 'enum',
+    enum: ['APPROVED', 'REJECT', 'PENDING'],
+    default: 'PENDING',
+  })
+  status: 'APPROVED' | 'REJECT' | 'PENDING';
 
   @UpdateDateColumn({ type: 'time without time zone' })
   created_on: Date;
