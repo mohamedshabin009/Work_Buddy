@@ -1,0 +1,31 @@
+import { IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
+
+export class CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsEnum(['EMPLOYEE', 'MANAGER'])
+  role: 'EMPLOYEE' | 'MANAGER';
+
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsPhoneNumber()
+  mobileNumber: string;
+
+  @IsNotEmpty()
+  @IsString()
+  profileImage: string;
+}
+
+export class UpdateUserDto {}
