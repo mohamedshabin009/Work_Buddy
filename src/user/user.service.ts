@@ -46,4 +46,16 @@ export class UserService {
       throw new BadRequestException(err.message || err);
     }
   }
+
+  async getId(param: number) {
+    try {
+      const checkId = await this.userModel.findOne({ where: { id: param } });
+      if (!checkId) {
+        throw new NotFoundException('There Is No User');
+      }
+      return checkId;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
 }
