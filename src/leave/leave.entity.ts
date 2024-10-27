@@ -34,10 +34,10 @@ export class Leave {
 
   @Column({
     type: 'enum',
-    enum: ['APPROVED', 'REJECT'],
+    enum: ['APPROVED', 'REJECT', 'PENDING'],
     default: 'PENDING',
   })
-  status: 'APPROVED' | 'REJECT';
+  status: 'APPROVED' | 'REJECT' | 'PENDING';
 
   @UpdateDateColumn({ type: 'time without time zone' })
   created_At: Date;
