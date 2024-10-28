@@ -18,8 +18,6 @@ export class CreateWfhDto {
   @IsEnum(['APPROVED', 'REJECT', 'PENDING'])
   status: 'APPROVED' | 'REJECT' | 'PENDING' = 'PENDING';
 
-  @IsNotEmpty()
-  @IsDateString()
   created_on: Date;
 }
 export class UpdateWfhDto {}
