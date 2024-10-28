@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
@@ -35,4 +36,12 @@ export class CreateUserDto {
   profileImage: string;
 }
 
-export class UpdateUserDto {}
+export class UpdateUserDto {
+  @IsOptional()
+  @IsPhoneNumber()
+  mobileNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  profileImage?: string;
+}
