@@ -31,5 +31,8 @@ export class CreateWorkLogDto {
 export class UpdateWorkLogDto {
   @IsOptional()
   @IsNotEmpty()
-  clockEvent: ClockEvent[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ClockEvent)
+  clockEvent?: ClockEvent[];
 }
