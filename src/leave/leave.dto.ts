@@ -1,4 +1,10 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateLeaveDto {
   @IsNotEmpty()
@@ -20,10 +26,31 @@ export class CreateLeaveDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsEnum(['APPROVED', 'REJECT', 'PENDING'])
+  @IsEnum(['APPROVED', 'REJECT', 'PENDING'], {
+    message: "You can select Only 'APPROVED','REJECT'",
+  })
   status: 'APPROVED' | 'REJECT' | 'PENDING' = 'PENDING';
 
   created_At: Date;
 }
 
-export class UpdateLeaveDto {}
+export class UpdateLeaveDto {
+  @IsOptional()
+  @IsDateString()
+  startDate?: Date;
+
+  @IsDateString()
+  @IsOptional()
+  endDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  reason?: string;
+
+  @IsEnum(['SICK', 'CASUAL'], {
+    message: "You can choose Only 'SICK' or 'CASUAL'",
+  })
+  @IsNotEmpty()
+  @IsOptional()
+  leaveType?: 'SICK' | 'CASUAL';
+}
