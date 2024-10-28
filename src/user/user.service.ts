@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -54,6 +54,37 @@ export class UserService {
         throw new NotFoundException('There Is No User');
       }
       return checkId;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async updateUser(userId: number, body: UpdateUserDto) {
+    try {
+      const checkUserId = await this.userModel.findOne({
+        where: { id: userId },
+      });
+      if (!checkUserId) {
+        throw new NotFoundException(`User in this ${userId} ID`);
+      }
+      const updateUser = await this.userModel.update(userId, body);
+      return {
+        success: true,
+        updateUser: await this.userModel.findOne({ where: { id: userId } }),
+      };
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async clearUser(param: number) {
+    try {
+      const deleteUser = await this.userModel.delete(param);
+
+      if (deleteUser.affected === 0) {
+        throw new NotFoundException(`User Not Found in this ${param} ID`);
+      }
+      return deleteUser;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
