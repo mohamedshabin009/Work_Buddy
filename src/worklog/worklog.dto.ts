@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsArray,
   IsDateString,
   IsNotEmpty,
@@ -32,6 +33,7 @@ export class UpdateWorkLogDto {
   @IsOptional()
   @IsNotEmpty()
   @IsArray()
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => ClockEvent)
   clockEvent?: ClockEvent[];
