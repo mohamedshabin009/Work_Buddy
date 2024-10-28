@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Leave } from './leave.entity';
-import { CreateLeaveDto } from './leave.dto';
+import { CreateLeaveDto, UpdateLeaveDto } from './leave.dto';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -45,6 +45,39 @@ export class LeaveService {
         throw new NotFoundException(`No Leave Request in this ${leaveId}th id`);
       }
       return checkId;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async updateReq(reqId: number, body: UpdateLeaveDto) {
+    try {
+      const checkLeaveReq = await this.leaveModel.findOne({
+        where: { id: reqId },
+      });
+
+      if (!checkLeaveReq)
+        throw new NotFoundException(`No Leave Request in this ${reqId}th ID`);
+
+      await this.leaveModel.update(reqId, body);
+
+      return {
+        Success: true,
+        Updated_user: await this.leaveModel.findOne({ where: { id: reqId } }),
+      };
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async clearLeaveReq(param: number) {
+    try {
+      const deleteLeaveReq = await this.leaveModel.delete(param);
+
+      if (deleteLeaveReq.affected === 0) {
+        throw new NotFoundException(`NOT FOUND !!!`);
+      }
+      return deleteLeaveReq;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
