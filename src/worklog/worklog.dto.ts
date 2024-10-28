@@ -3,6 +3,7 @@ import {
   IsArray,
   IsDateString,
   IsNotEmpty,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 
@@ -27,4 +28,8 @@ export class CreateWorkLogDto {
   @Type(() => ClockEvent)
   clockEvent: ClockEvent[];
 }
-export class UpdateWorkLogDto {}
+export class UpdateWorkLogDto {
+  @IsOptional()
+  @IsNotEmpty()
+  clockEvent: ClockEvent[];
+}
