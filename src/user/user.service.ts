@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 
 @Injectable()
@@ -85,6 +85,21 @@ export class UserService {
         throw new NotFoundException(`User Not Found in this ${param} ID`);
       }
       return deleteUser;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async searchUserName(userName) {
+    try {
+      const user_name_search = await this.userModel.find({
+        where: { name: ILike(`%${userName}%`) },
+      });
+      if (user_name_search.length === 0) {
+        throw new NotFoundException(`No users found with the name ${userName}`);
+      }
+
+      return user_name_search;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }

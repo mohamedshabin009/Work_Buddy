@@ -6,15 +6,17 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { query } from 'express';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userServices: UserService) {}
 
-  @Post('create')
+  @Post('register')
   async createUser(@Body() body: CreateUserDto) {
     console.info(body);
 
@@ -46,5 +48,10 @@ export class UserController {
       success: true,
       message: 'Deleted Successfully',
     };
+  }
+
+  @Get('search/user')
+  async searchUser(@Query() query: { name: string }) {
+    return await this.userServices.searchUserName(query.name);
   }
 }
