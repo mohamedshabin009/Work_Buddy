@@ -12,7 +12,7 @@ export class WorkLog {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => User, (user) => user.workLogs)
+  @ManyToOne(() => User, (user) => user.workLogs, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user' })
   user: User;
 
