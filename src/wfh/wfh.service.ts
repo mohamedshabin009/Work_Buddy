@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Wfh } from './wfh.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateManyModel } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateWfhDto } from './wfh.dto';
+import { CreateWfhDto, UpdateWfhDto } from './wfh.dto';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -51,6 +51,32 @@ export class WfhService {
         );
       }
       return checkReqId;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async updateWFH(wfhId: number, body: UpdateWfhDto) {
+    const check = await this.wfhModel.findOne({ where: { id: wfhId } });
+    if (!check) {
+      throw new NotFoundException(`No WFH Request in this ${wfhId} ID`);
+    }
+
+    await this.wfhModel.update(wfhId, body);
+    return {
+      Success: true,
+      Updated_wfh_reqest: await this.wfhModel.findOne({ where: { id: wfhId } }),
+    };
+  }
+
+  async clearWfhReq(param: number) {
+    try {
+      const deleteWfhReq = await this.wfhModel.delete(param);
+
+      if (deleteWfhReq.affected === 0) {
+        throw new NotFoundException(`NOT FOUND !!!`);
+      }
+      return deleteWfhReq;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
