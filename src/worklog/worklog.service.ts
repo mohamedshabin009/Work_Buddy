@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkLog } from './worklog.entity';
 import { Repository } from 'typeorm';
-import { CreateWorkLogDto } from './worklog.dto';
+import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -50,6 +50,35 @@ export class WorklogService {
       }
 
       return { Success: true, checkWorkId };
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
+  async alterWorkLog(param: number, body: UpdateWorkLogDto) {
+    const check = await this.worklogModel.findOne({ where: { id: param } });
+    if (!check) {
+      throw new NotFoundException(`No WorkLog in this ${param} ID`);
+    }
+
+    await this.worklogModel.update(param, body);
+
+    return {
+      Success: true,
+      Updated_workLog: await this.worklogModel.findOne({
+        where: { id: param },
+      }),
+    };
+  }
+
+  async clearWorkLog(param: number) {
+    try {
+      const deleteWorkLog = await this.worklogModel.delete(param);
+
+      if (deleteWorkLog.affected === 0) {
+        throw new NotFoundException(`NOT FOUND !!!`);
+      }
+      return deleteWorkLog;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }

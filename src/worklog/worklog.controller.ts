@@ -1,14 +1,16 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { WorklogService } from './worklog.service';
-import { CreateWorkLogDto } from './worklog.dto';
+import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
 
 @Controller('worklog')
 export class WorklogController {
@@ -35,5 +37,23 @@ export class WorklogController {
   @Get('getWorkLogById/:workLogId')
   async getWorkLogById(@Param('workLogId') id: number) {
     return await this.worklogServices.getWorkLogId(id);
+  }
+
+  @Put('update/:worklogId')
+  async updateWorkLog(
+    @Param('worklogId') id: number,
+    @Body() body: UpdateWorkLogDto,
+  ) {
+    console.info(id, body);
+    return await this.worklogServices.alterWorkLog(id, body);
+  }
+
+  @Delete('delete/:worklogId')
+  async deleteWorkLogRequest(@Param('worklogId') param: number) {
+    await this.worklogServices.clearWorkLog(param);
+    return {
+      success: true,
+      message: 'Deleted Successfully',
+    };
   }
 }
