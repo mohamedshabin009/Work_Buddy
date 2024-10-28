@@ -19,6 +19,6 @@ export class WorkLog {
   @Column()
   date: Date;
 
-  @Column('json', { array: true })
+  @Column({ type: 'json', nullable: true })
   clockEvent: { clock_in_time: Date; clock_out_time: Date }[];
 }
