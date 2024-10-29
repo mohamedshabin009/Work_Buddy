@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -16,16 +15,12 @@ import { WfhService } from './wfh.service';
 export class WfhController {
   constructor(private readonly wfhServices: WfhService) {}
 
-  @Post('create')
-  //use params
+  @Post('create/:userId')
   async createWorkFromHome(
     @Body() body: CreateWfhDto,
-    @Query() query: { id: number },
+    @Param('userId') id: number,
   ) {
-    const checkId = query.id;
-
-    if (!checkId) throw new NotFoundException('Wrong Query Name');
-    return await this.wfhServices.createWorkFromHome(body, query.id);
+    return await this.wfhServices.createWorkFromHome(body, id);
   }
 
   @Get('getAllWFH')
@@ -33,9 +28,9 @@ export class WfhController {
     return await this.wfhServices.getAllWorkFromHome();
   }
 
-  @Get('getWFHRequestById/:id')
-  async getWorkFromHomeById(@Param('id') id: number) {
-    return await this.wfhServices.getWorkFromHomeById(id);
+  @Get('getWFHById/')
+  async getWorkFromHomeById(@Query() query: { id: number }) {
+    return await this.wfhServices.getWorkFromHomeById(query.id);
   }
 
   @Put('update/WFH/:id')

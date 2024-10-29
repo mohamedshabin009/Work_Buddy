@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -16,19 +15,12 @@ import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
 export class WorklogController {
   constructor(private readonly worklogServices: WorklogService) {}
 
-  @Post('createWorkLog')
+  @Post('createWorkLog/:userId')
   async createWorkLog(
     @Body() body: CreateWorkLogDto,
-    //use params
-    @Query() query: { id: number },
+    @Param('userId') id: number,
   ) {
-    const check = query.id;
-    if (!check) {
-      throw new NotFoundException('WRONG QUERY NAME');
-    }
-    //give proper naming conventation
-
-    return await this.worklogServices.createWorkLog(body, query.id);
+    return await this.worklogServices.createWorkLog(body, id);
   }
 
   @Get('getAllWorkLog')
@@ -36,9 +28,9 @@ export class WorklogController {
     return await this.worklogServices.getAll();
   }
 
-  @Get('getWorkLogById/:workLogId')
-  async getWorkLogById(@Param('workLogId') id: number) {
-    return await this.worklogServices.getWorkLogId(id);
+  @Get('getWorkLogById')
+  async getWorkLogById(@Query() query: { id: number }) {
+    return await this.worklogServices.getWorkLogId(query.id);
   }
 
   @Put('update/:worklogId')

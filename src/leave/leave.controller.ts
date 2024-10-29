@@ -16,27 +16,19 @@ import { CreateLeaveDto, UpdateLeaveDto } from './leave.dto';
 export class LeaveController {
   constructor(private readonly leaveServices: LeaveService) {}
 
-  @Post('createLeaveRequest')
-  async createLeave(
-    @Body() body: CreateLeaveDto,
-    @Query() userId: { id: number },
-  ) {
-    const _userId = userId.id;
-
-    if (!_userId) {
-      throw new NotFoundException('Wrong Query Name');
-    }
-    return await this.leaveServices.createLeave(body, userId.id);
+  @Post('createLeave/:userId')
+  async createLeave(@Body() body: CreateLeaveDto, @Param('userId') id: number) {
+    return await this.leaveServices.createLeave(body, id);
   }
 
-  @Get('getAllLeaveRequest')
+  @Get('getAllLeave')
   async getAllLeave() {
     return this.leaveServices.getAllLeave();
   }
 
-  @Get('getLeaveRequestById/:id')
-  async getLeaveById(@Param('id') id: number) {
-    return await this.leaveServices.getLeaveById(id);
+  @Get('getLeaveById')
+  async getLeaveById(@Query() query: { id: number }) {
+    return await this.leaveServices.getLeaveById(query.id);
   }
 
   @Put('updateReq/:leaveReqId')
