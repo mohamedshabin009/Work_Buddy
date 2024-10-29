@@ -14,6 +14,7 @@ import { join } from 'path';
     LeaveModule,
     WfhModule,
     WorklogModule,
+    //add ormconfig file and also add values in env
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
