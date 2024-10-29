@@ -2,6 +2,7 @@ import { Leave } from 'src/leave/leave.entity';
 import { Wfh } from 'src/wfh/wfh.entity';
 import { WorkLog } from 'src/worklog/worklog.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 @Entity({ name: 'user_details' })
 export class User {
   @PrimaryGeneratedColumn('increment')
