@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { WorklogService } from './worklog.service';
 import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
-
+//give proper naming conventation
 @Controller('worklog')
 export class WorklogController {
   constructor(private readonly worklogServices: WorklogService) {}
@@ -19,14 +19,16 @@ export class WorklogController {
   @Post('createWorkLog')
   async createWorkLog(
     @Body() body: CreateWorkLogDto,
+    //use params
     @Query() query: { id: number },
   ) {
-    console.info(body);
     const check = query.id;
     if (!check) {
       throw new NotFoundException('WRONG QUERY NAME');
     }
-    return await this.worklogServices.create_work_log(body, query.id);
+    //give proper naming conventation
+
+    return await this.worklogServices.createWorkLog(body, query.id);
   }
 
   @Get('getAllWorkLog')
@@ -45,12 +47,12 @@ export class WorklogController {
     @Body() body: UpdateWorkLogDto,
   ) {
     console.info(id, body);
-    return await this.worklogServices.alterWorkLog(id, body);
+    return await this.worklogServices.updateWorkLog(id, body);
   }
 
   @Delete('delete/:worklogId')
-  async deleteWorkLogRequest(@Param('worklogId') param: number) {
-    await this.worklogServices.clearWorkLog(param);
+  async deleteWorkLog(@Param('worklogId') id: number) {
+    await this.worklogServices.deleteWorkLog(id);
     return {
       success: true,
       message: 'Deleted Successfully',

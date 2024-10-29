@@ -17,9 +17,9 @@ export class WorklogService {
     private readonly userServices: UserService,
   ) {}
 
-  async create_work_log(body: CreateWorkLogDto, userId: number) {
+  async createWorkLog(body: CreateWorkLogDto, userId: number) {
     try {
-      const user = await this.userServices.getId(userId);
+      const user = await this.userServices.getById(userId);
       body['user'] = user;
       return await this.worklogModel.save(body);
     } catch (err) {
@@ -30,10 +30,10 @@ export class WorklogService {
   async getAll() {
     try {
       const getAllWorkLogs = await this.worklogModel.find();
-      if (getAllWorkLogs.length === 0) {
-        throw new NotFoundException('NO WORK LOGS');
-      }
-      return { Success: true, getAllWorkLogs };
+      // if (getAllWorkLogs.length === 0) {
+      //   throw new NotFoundException('NO WORK LOGS');
+      // }
+      return { success: true, getAllWorkLogs };
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
@@ -41,39 +41,41 @@ export class WorklogService {
 
   async getWorkLogId(workId: number) {
     try {
-      const checkWorkId = await this.worklogModel.findOne({
+      const work = await this.worklogModel.findOne({
         where: { id: workId },
         relations: ['user'],
       });
-      if (!checkWorkId) {
+      if (!work) {
         throw new NotFoundException(`No Work LOG ${workId}th ID`);
       }
 
-      return { Success: true, checkWorkId };
+      return { success: true, work };
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async alterWorkLog(param: number, body: UpdateWorkLogDto) {
-    const check = await this.worklogModel.findOne({ where: { id: param } });
-    if (!check) {
-      throw new NotFoundException(`No WorkLog in this ${param} ID`);
+  //give proper naming conventation
+
+  async updateWorkLog(id: number, body: UpdateWorkLogDto) {
+    const work = await this.worklogModel.findOne({ where: { id: id } });
+    if (!work) {
+      throw new NotFoundException(`No WorkLog in this ${id} ID`);
     }
 
-    await this.worklogModel.update(param, body);
+    await this.worklogModel.update(id, body);
 
     return {
-      Success: true,
-      Updated_workLog: await this.worklogModel.findOne({
-        where: { id: param },
+      success: true,
+      workLog: await this.worklogModel.findOne({
+        where: { id: id },
       }),
     };
   }
 
-  async clearWorkLog(param: number) {
+  async deleteWorkLog(id: number) {
     try {
-      const deleteWorkLog = await this.worklogModel.delete(param);
+      const deleteWorkLog = await this.worklogModel.delete(id);
 
       if (deleteWorkLog.affected === 0) {
         throw new NotFoundException(`NOT FOUND !!!`);
