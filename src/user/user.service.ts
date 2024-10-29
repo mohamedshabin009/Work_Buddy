@@ -14,22 +14,20 @@ export class UserService {
     @InjectRepository(User) private readonly userModel: Repository<User>,
   ) {}
 
-  async createUser(create_user: CreateUserDto) {
+  async createUser(body: CreateUserDto) {
     try {
-      const checkEmail = await this.userModel.findOne({
-        where: { email: create_user.email },
-      });
-      const checkName = await this.userModel.findOne({
-        where: { name: create_user.name },
+      //use one query
+      const check = await this.userModel.findOne({
+        where: [{ email: body.email }, { name: body.name }],
       });
 
-      if (checkEmail || checkName) {
+      if (check) {
         throw new BadRequestException('User Already Exist with Name or Email');
       }
 
-      const userCreate = await this.userModel.save(create_user);
+      const user = await this.userModel.save(body);
 
-      return { Success: true, userCreate };
+      return { Success: true, user };
     } catch (err) {
       throw new NotFoundException(err.message || err);
     }
@@ -37,52 +35,52 @@ export class UserService {
 
   async getAll() {
     try {
-      const checkUser = await this.userModel.find();
-      if (checkUser.length === 0) {
+      const user = await this.userModel.find();
+      if (user.length === 0) {
         throw new NotFoundException('No Users');
       }
-      return checkUser;
+      return user;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async getId(param: number) {
+  async getById(param: number) {
     try {
-      const checkId = await this.userModel.findOne({ where: { id: param } });
-      if (!checkId) {
+      const user = await this.userModel.findOne({ where: { id: param } });
+      if (!user) {
         throw new NotFoundException('There Is No User');
       }
-      return checkId;
+      return user;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async updateUser(userId: number, body: UpdateUserDto) {
+  async updateUser(id: number, body: UpdateUserDto) {
     try {
-      const checkUserId = await this.userModel.findOne({
-        where: { id: userId },
+      const check = await this.userModel.findOne({
+        where: { id: id },
       });
-      if (!checkUserId) {
-        throw new NotFoundException(`User in this ${userId} ID`);
+      if (!check) {
+        throw new NotFoundException(`User in this ${id} ID`);
       }
-      const updateUser = await this.userModel.update(userId, body);
+      await this.userModel.update(id, body);
       return {
         success: true,
-        updateUser: await this.userModel.findOne({ where: { id: userId } }),
+        updateUser: await this.userModel.findOne({ where: { id: id } }),
       };
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async clearUser(param: number) {
+  async deleteUser(id: number) {
     try {
-      const deleteUser = await this.userModel.delete(param);
+      const deleteUser = await this.userModel.delete(id);
 
       if (deleteUser.affected === 0) {
-        throw new NotFoundException(`User Not Found in this ${param} ID`);
+        throw new NotFoundException(`User Not Found in this ${id} ID`);
       }
       return deleteUser;
     } catch (err) {
@@ -90,16 +88,16 @@ export class UserService {
     }
   }
 
-  async searchUserName(userName) {
+  async searchUserName(userName: string) {
     try {
-      const user_name_search = await this.userModel.find({
+      const user = await this.userModel.find({
         where: { name: ILike(`%${userName}%`) },
       });
-      if (user_name_search.length === 0) {
+      if (user.length === 0) {
         throw new NotFoundException(`No users found with the name ${userName}`);
       }
 
-      return user_name_search;
+      return user;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }

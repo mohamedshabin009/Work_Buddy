@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
-import { query } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -18,8 +17,6 @@ export class UserController {
 
   @Post('register')
   async createUser(@Body() body: CreateUserDto) {
-    console.info(body);
-
     return await this.userServices.createUser(body);
   }
 
@@ -30,11 +27,11 @@ export class UserController {
 
   @Get('getUserById/:id')
   async getUserById(@Param('id') id: number) {
-    return await this.userServices.getId(id);
+    return await this.userServices.getById(id);
   }
 
   @Put('updateUser/:userId')
-  async updateUsers(
+  async updateUser(
     @Body() body: UpdateUserDto,
     @Param('userId') userId: number,
   ) {
@@ -43,7 +40,7 @@ export class UserController {
 
   @Delete('delete/:userId')
   async deleteUser(@Param('userId') param: number) {
-    await this.userServices.clearUser(param);
+    await this.userServices.deleteUser(param);
     return {
       success: true,
       message: 'Deleted Successfully',
