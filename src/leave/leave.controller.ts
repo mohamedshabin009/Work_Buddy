@@ -17,7 +17,7 @@ export class LeaveController {
   constructor(private readonly leaveServices: LeaveService) {}
 
   @Post('createLeaveRequest')
-  async createLeaveRequest(
+  async createLeave(
     @Body() body: CreateLeaveDto,
     @Query() userId: { id: number },
   ) {
@@ -30,26 +30,26 @@ export class LeaveController {
   }
 
   @Get('getAllLeaveRequest')
-  async getAllLeaveReq() {
+  async getAllLeave() {
     return this.leaveServices.getAllLeave();
   }
 
   @Get('getLeaveRequestById/:id')
-  async getLeaveRequestById(@Param('id') id: number) {
-    return await this.leaveServices.getLeaveReqById(id);
+  async getLeaveById(@Param('id') id: number) {
+    return await this.leaveServices.getLeaveById(id);
   }
 
   @Put('updateReq/:leaveReqId')
-  async updateLeaveReq(
+  async updateLeave(
     @Param('leaveReqId') leaveID: number,
     @Body() Body: UpdateLeaveDto,
   ) {
-    return await this.leaveServices.updateReq(leaveID, Body);
+    return await this.leaveServices.updateLeave(leaveID, Body);
   }
 
   @Delete('delete/:leaveReqId')
-  async deleteLeaveRequest(@Param('leaveReqId') param: number) {
-    await this.leaveServices.clearLeaveReq(param);
+  async deleteLeave(@Param('leaveReqId') param: number) {
+    await this.leaveServices.deleteLeave(param);
     return {
       success: true,
       message: 'Deleted Successfully',

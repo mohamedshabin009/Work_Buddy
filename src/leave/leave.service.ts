@@ -18,7 +18,7 @@ export class LeaveService {
 
   async createLeave(body: CreateLeaveDto, userId: number) {
     try {
-      const user = await this.userServices.getId(userId);
+      const user = await this.userServices.getById(userId);
       body['user'] = user;
       return { Success: true, leaveRequest: await this.leaveModel.save(body) };
     } catch (err) {
@@ -35,7 +35,7 @@ export class LeaveService {
     return check;
   }
 
-  async getLeaveReqById(leaveId: number) {
+  async getLeaveById(leaveId: number) {
     try {
       const checkId = await this.leaveModel.findOne({
         where: { id: leaveId },
@@ -50,7 +50,7 @@ export class LeaveService {
     }
   }
 
-  async updateReq(reqId: number, body: UpdateLeaveDto) {
+  async updateLeave(reqId: number, body: UpdateLeaveDto) {
     try {
       const checkLeaveReq = await this.leaveModel.findOne({
         where: { id: reqId },
@@ -70,7 +70,7 @@ export class LeaveService {
     }
   }
 
-  async clearLeaveReq(param: number) {
+  async deleteLeave(param: number) {
     try {
       const deleteLeaveReq = await this.leaveModel.delete(param);
 
