@@ -16,35 +16,39 @@ import { WfhService } from './wfh.service';
 export class WfhController {
   constructor(private readonly wfhServices: WfhService) {}
 
-  @Post('create/Wfh')
-  async createWfh(@Body() body: CreateWfhDto, @Query() query: { id: number }) {
+  @Post('create')
+  //use params
+  async createWorkFromHome(
+    @Body() body: CreateWfhDto,
+    @Query() query: { id: number },
+  ) {
     const checkId = query.id;
 
     if (!checkId) throw new NotFoundException('Wrong Query Name');
     return await this.wfhServices.createWorkFromHome(body, query.id);
   }
 
-  @Get('getAllWFHRequest')
-  async getAllWFHRequest() {
-    return await this.wfhServices.getAllWfhReq();
+  @Get('getAllWFH')
+  async getAllWorkFromHome() {
+    return await this.wfhServices.getAllWorkFromHome();
   }
 
-  @Get('getWFHRequestById/:requestId')
-  async getWFHRequestById(@Param('requestId') param: number) {
-    return await this.wfhServices.getReqById(param);
+  @Get('getWFHRequestById/:id')
+  async getWorkFromHomeById(@Param('id') id: number) {
+    return await this.wfhServices.getWorkFromHomeById(id);
   }
 
-  @Put('update/WFH/request/:wfhId')
-  async updateWfhRequest(
-    @Param('wfhId') id: number,
+  @Put('update/WFH/:id')
+  async updateWorkFromHome(
+    @Param('id') id: number,
     @Body() body: UpdateWfhDto,
   ) {
-    return await this.wfhServices.updateWFH(id, body);
+    return await this.wfhServices.updateWorkFromHome(id, body);
   }
 
-  @Delete('delete/:wfhReqId')
-  async deleteWfhRequest(@Param('wfhReqId') param: number) {
-    await this.wfhServices.clearWfhReq(param);
+  @Delete('delete/:wfhId')
+  async deleteWorkFromHome(@Param('wfhId') id: number) {
+    await this.wfhServices.deleteWorkFromHome(id);
     return {
       success: true,
       message: 'Deleted Successfully',
