@@ -25,9 +25,9 @@ export class UserController {
     return await this.userServices.getAll();
   }
 
-  @Get('getUserById/:id')
-  async getUserById(@Param('id') id: number) {
-    return await this.userServices.getById(id);
+  @Get('getUserById')
+  async getUserById(@Query() query: { id: number }) {
+    return await this.userServices.getById(query.id);
   }
 
   @Put('updateUser/:userId')
