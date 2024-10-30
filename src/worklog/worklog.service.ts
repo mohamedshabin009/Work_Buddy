@@ -55,6 +55,18 @@ export class WorklogService {
     }
   }
 
+  async getWorkLogsByUserId(id: number) {
+    const user = await this.worklogModel.find({
+      where: { user: { id } },
+      relations: ['user'],
+    });
+    if (!user) {
+      throw new NotFoundException('USER NOT FOUND');
+    }
+
+    return user;
+  }
+
   //give proper naming conventation
 
   async updateWorkLog(id: number, body: UpdateWorkLogDto) {

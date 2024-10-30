@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { WorklogService } from './worklog.service';
 import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
-//give proper naming conventation
-@Controller('worklog')
+
+@Controller('workLog')
 export class WorklogController {
   constructor(private readonly worklogServices: WorklogService) {}
 
@@ -31,6 +31,11 @@ export class WorklogController {
   @Get('getWorkLogById')
   async getWorkLogById(@Query() query: { id: number }) {
     return await this.worklogServices.getWorkLogId(query.id);
+  }
+
+  @Get('getWorkLogsByUserId')
+  async getWorkLogsByUserId(@Query() query: { id: number }) {
+    return await this.worklogServices.getWorkLogsByUserId(query.id);
   }
 
   @Put('update/:worklogId')
