@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -11,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { LeaveService } from './leave.service';
 import { CreateLeaveDto, UpdateLeaveDto } from './leave.dto';
+import { query } from 'express';
 
 @Controller('leave')
 export class LeaveController {
@@ -29,6 +29,11 @@ export class LeaveController {
   @Get('getLeaveById')
   async getLeaveById(@Query() query: { id: number }) {
     return await this.leaveServices.getLeaveById(query.id);
+  }
+
+  @Get('getLeaveRequestsByUserId')
+  async getLeaveRequestsByUserId(@Query() query: { userId: number }) {
+    return await this.leaveServices.getLeaveRequestsByUserId(query.userId);
   }
 
   @Put('updateReq/:leaveReqId')

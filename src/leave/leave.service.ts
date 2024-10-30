@@ -20,64 +20,80 @@ export class LeaveService {
     try {
       const user = await this.userServices.getById(userId);
       body['user'] = user;
-      return { Success: true, leaveRequest: await this.leaveModel.save(body) };
+      return { success: true, leaveCreated: await this.leaveModel.save(body) };
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
   async getAllLeave() {
-    const check = await this.leaveModel.find({ relations: ['user'] });
+    const leave = await this.leaveModel.find({ relations: ['user'] });
 
-    if (check.length === 0) {
+    if (leave.length === 0) {
       throw new NotFoundException('No Leave Request');
     }
-    return check;
+    return leave;
   }
 
-  async getLeaveById(leaveId: number) {
+  async getLeaveById(id: number) {
     try {
-      const checkId = await this.leaveModel.findOne({
-        where: { id: leaveId },
+      const leave = await this.leaveModel.findOne({
+        where: { id: id },
         relations: ['user'],
       });
-      if (!checkId) {
-        throw new NotFoundException(`No Leave Request in this ${leaveId}th id`);
+      if (!leave) {
+        throw new NotFoundException(`No Leave Request in this ${id} id`);
       }
-      return checkId;
+      return leave;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async updateLeave(reqId: number, body: UpdateLeaveDto) {
+  async getLeaveRequestsByUserId(id: number) {
     try {
-      const checkLeaveReq = await this.leaveModel.findOne({
-        where: { id: reqId },
+      const user = await this.leaveModel.findOne({
+        where: { user: { id: id } },
+        relations: ['user'],
       });
 
-      if (!checkLeaveReq)
-        throw new NotFoundException(`No Leave Request in this ${reqId}th ID`);
+      if (!user) {
+        throw new NotFoundException('USER NOT FOUND!!!');
+      }
+      return user;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
 
-      await this.leaveModel.update(reqId, body);
+  async updateLeave(id: number, body: UpdateLeaveDto) {
+    try {
+      const leave = await this.leaveModel.findOne({
+        where: { id: id },
+      });
+
+      if (!leave)
+        throw new NotFoundException(`No Leave Request in this ${id}th ID`);
+
+      await this.leaveModel.update(id, body);
 
       return {
         Success: true,
-        Updated_user: await this.leaveModel.findOne({ where: { id: reqId } }),
+        Updated_user: await this.leaveModel.findOne({ where: { id: id } }),
       };
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
   }
 
-  async deleteLeave(param: number) {
+  async deleteLeave(id: number) {
     try {
-      const deleteLeaveReq = await this.leaveModel.delete(param);
+      const leave = await this.leaveModel.delete(id);
 
-      if (deleteLeaveReq.affected === 0) {
+      if (leave.affected === 0) {
         throw new NotFoundException(`NOT FOUND !!!`);
       }
-      return deleteLeaveReq;
+      return leave;
     } catch (err) {
       throw new BadRequestException(err.message || err);
     }
