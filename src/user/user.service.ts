@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { ILike, Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -24,7 +25,7 @@ export class UserService {
       if (check) {
         throw new BadRequestException('User Already Exist with Name or Email');
       }
-
+      body['password'] = await bcrypt.hash(body.password, 10);
       const user = await this.userModel.save(body);
 
       return { Success: true, user };

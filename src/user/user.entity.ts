@@ -1,7 +1,14 @@
 import { Leave } from 'src/leave/leave.entity';
 import { Wfh } from 'src/wfh/wfh.entity';
 import { WorkLog } from 'src/worklog/worklog.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
 @Entity({ name: 'user_details' })
 export class User {
@@ -37,4 +44,16 @@ export class User {
 
   @OneToMany(() => WorkLog, (workLog) => workLog.user)
   workLogs: WorkLog[];
+
+  // @BeforeInsert()
+  // async beforeInsert() {
+  //   if (this.password) {
+  //     try {
+  //       this.password = await bcrypt.hash(this.password, 10);
+  //     } catch (error) {
+  //       console.error('Error hashing password:', error);
+  //       throw new Error('Failed to hash password');
+  //     }
+  //   }
+  // }
 }
