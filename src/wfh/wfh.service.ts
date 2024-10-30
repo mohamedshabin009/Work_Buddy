@@ -56,6 +56,19 @@ export class WfhService {
     }
   }
 
+  async getWfhByUserId(id: number) {
+    try {
+      const user = await this.wfhModel.find({
+        where: { user: { id } },
+        relations: ['user'],
+      });
+      if (!user) throw new NotFoundException('USER NOT FOUND!!!');
+      return user;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
+    }
+  }
+
   async updateWorkFromHome(id: number, body: UpdateWfhDto) {
     const workFromHome = await this.wfhModel.findOne({ where: { id: id } });
     if (!workFromHome) {

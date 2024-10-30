@@ -33,6 +33,11 @@ export class WfhController {
     return await this.wfhServices.getWorkFromHomeById(query.id);
   }
 
+  @Get('getWfhByUserId')
+  async getWfhByUserId(@Query() query: { userId: number }) {
+    return await this.wfhServices.getWfhByUserId(query.userId);
+  }
+
   @Put('update/WFH/:id')
   async updateWorkFromHome(
     @Param('id') id: number,
