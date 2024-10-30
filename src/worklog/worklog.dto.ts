@@ -4,7 +4,10 @@ import {
   IsArray,
   IsDateString,
   IsNotEmpty,
+  IsNumber,
+  IsNumberString,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
@@ -17,7 +20,11 @@ export class ClockEvent {
   @IsDateString()
   clock_out_time: Date;
 }
-
+export class Filter {
+  @IsNotEmpty()
+  @IsNumberString()
+  id: number;
+}
 export class CreateWorkLogDto {
   @IsNotEmpty()
   @IsDateString()

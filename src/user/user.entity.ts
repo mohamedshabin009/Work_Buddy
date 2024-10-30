@@ -1,6 +1,6 @@
-import { Leave } from 'src/leave/leave.entity';
-import { Wfh } from 'src/wfh/wfh.entity';
-import { WorkLog } from 'src/worklog/worklog.entity';
+import { Leave } from '../leave/leave.entity';
+import { Wfh } from '../wfh/wfh.entity';
+import { WorkLog } from '../worklog/worklog.entity';
 import {
   BeforeInsert,
   Column,

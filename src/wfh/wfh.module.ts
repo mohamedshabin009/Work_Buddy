@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Wfh } from './wfh.entity';
 import { WfhController } from './wfh.controller';
 import { WfhService } from './wfh.service';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Wfh]), UserModule],

@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Leave } from './leave.entity';
 import { CreateLeaveDto, UpdateLeaveDto } from './leave.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class LeaveService {

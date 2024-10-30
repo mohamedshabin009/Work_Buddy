@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { WorklogService } from './worklog.service';
-import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
+import { CreateWorkLogDto, Filter, UpdateWorkLogDto } from './worklog.dto';
 
 @Controller('workLog')
 export class WorklogController {
@@ -34,7 +34,7 @@ export class WorklogController {
   }
 
   @Get('getWorkLogsByUserId')
-  async getWorkLogsByUserId(@Query() query: { id: number }) {
+  async getWorkLogsByUserId(@Query() query: Filter) {
     return await this.worklogServices.getWorkLogsByUserId(query.id);
   }
 

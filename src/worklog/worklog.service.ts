@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { WorkLog } from './worklog.entity';
 import { Repository } from 'typeorm';
 import { CreateWorkLogDto, UpdateWorkLogDto } from './worklog.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class WorklogService {
@@ -56,7 +56,7 @@ export class WorklogService {
   }
 
   async getWorkLogsByUserId(id: number) {
-    const user = await this.worklogModel.find({
+    const user = await this.worklogModel.findOne({
       where: { user: { id } },
       relations: ['user'],
     });

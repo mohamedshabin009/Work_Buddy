@@ -7,7 +7,7 @@ import { Wfh } from './wfh.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateWfhDto, UpdateWfhDto } from './wfh.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class WfhService {
