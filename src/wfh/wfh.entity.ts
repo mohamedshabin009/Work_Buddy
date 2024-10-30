@@ -31,7 +31,7 @@ export class Wfh {
     enum: ['APPROVED', 'REJECT', 'PENDING'],
     default: 'PENDING',
   })
-  status: 'APPROVED' | 'REJECT' | 'PENDING';
+  status: string;
 
   @UpdateDateColumn({ type: 'time without time zone' })
   created_on: Date;

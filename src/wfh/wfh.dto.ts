@@ -6,6 +6,11 @@ import {
   IsString,
 } from 'class-validator';
 
+export enum Status {
+  'APPROVED' = 'APPROVED',
+  'REJECT' = 'REJECT',
+  'PENDING' = 'PENDING',
+}
 export class CreateWfhDto {
   @IsNotEmpty()
   @IsDateString()
@@ -19,12 +24,12 @@ export class CreateWfhDto {
   @IsNotEmpty()
   reason: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  @IsEnum(['APPROVED', 'REJECT', 'PENDING'], {
-    message: "You can select Only 'APPROVED','REJECT'",
+  @IsEnum(Status, {
+    message: "You can select Only 'APPROVED','PENDING',REJECT'",
   })
-  status: 'APPROVED' | 'REJECT' | 'PENDING' = 'PENDING';
+  status?: string;
 
   created_on: Date;
 }
