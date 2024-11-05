@@ -30,9 +30,6 @@ export class WorklogService {
   async getAll() {
     try {
       const getAllWorkLogs = await this.worklogModel.find();
-      // if (getAllWorkLogs.length === 0) {
-      //   throw new NotFoundException('NO WORK LOGS');
-      // }
       return { success: true, getAllWorkLogs };
     } catch (err) {
       throw new BadRequestException(err.message || err);
