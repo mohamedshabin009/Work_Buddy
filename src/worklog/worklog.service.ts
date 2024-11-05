@@ -23,7 +23,7 @@ export class WorklogService {
       body['user'] = user;
       return await this.worklogModel.save(body);
     } catch (err) {
-      throw new BadRequestException(err.message || err);
+      throw new BadRequestException(err.message);
     }
   }
 
@@ -41,7 +41,7 @@ export class WorklogService {
 
   async getWorkLogId(workId: number) {
     try {
-      const work = await this.worklogModel.findOne({
+      const work = await this.worklogModel.find({
         where: { id: workId },
         relations: ['user'],
       });
@@ -56,7 +56,7 @@ export class WorklogService {
   }
 
   async getWorkLogsByUserId(id: number) {
-    const user = await this.worklogModel.findOne({
+    const user = await this.worklogModel.find({
       where: { user: { id } },
       relations: ['user'],
     });
@@ -66,8 +66,6 @@ export class WorklogService {
 
     return user;
   }
-
-  //give proper naming conventation
 
   async updateWorkLog(id: number, body: UpdateWorkLogDto) {
     const work = await this.worklogModel.findOne({ where: { id: id } });
