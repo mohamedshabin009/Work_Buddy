@@ -30,9 +30,6 @@ export class WfhService {
   async getAllWorkFromHome() {
     try {
       const workFromHome = await this.wfhModel.find({ relations: ['user'] });
-
-      if (workFromHome.length === 0)
-        throw new NotFoundException('There Is No Work From Home Request');
       return workFromHome;
     } catch (err) {
       throw new BadRequestException(err.message || err);
