@@ -25,21 +25,18 @@ export class UserService {
       if (check) {
         throw new BadRequestException('User Already Exist with Name or Email');
       }
-      body['password'] = await bcrypt.hash(body.password, 10);
+      // body['password'] = await bcrypt.hash(body.password, 10);
       const user = await this.userModel.save(body);
 
       return { Success: true, user };
     } catch (err) {
-      throw new NotFoundException(err.message || err);
+      throw new BadRequestException(err.message || err);
     }
   }
 
   async getAll() {
     try {
       const user = await this.userModel.find();
-      if (user.length === 0) {
-        throw new NotFoundException('No Users');
-      }
       return user;
     } catch (err) {
       throw new BadRequestException(err.message || err);
