@@ -95,3 +95,30 @@ describe('WorklogController', () => {
     });
   });
 });
+
+// describe('updateWorkLog', () => {
+//   it('should call service to update work log and return the updated result', async () => {
+//     const workLogId = 39;
+//     const updateUser = {
+//       clockEvent: [
+//         {
+//           clock_in_time: '2024-10-28',
+//           clock_out_time: '2024-10-28T18:30:00.000Z',
+//         },
+//       ],
+//     };
+
+//     // Mock the service response
+//     const mockUpdatedResult = { success: true, workLog: { id: workLogId, ...updateUser } };
+//     jest.spyOn(worklogService, 'updateWorkLog').mockResolvedValue(mockUpdatedResult);
+
+//     // Call the controller method
+//     const result = await controller.updateWorkLog(workLogId, updateUser);
+
+//     // Assert the service was called with the correct arguments
+//     expect(worklogService.updateWorkLog).toHaveBeenCalledWith(workLogId, updateUser);
+
+//     // Assert the result matches the mock response
+//     expect(result).toEqual(mockUpdatedResult);
+//   });
+// });
