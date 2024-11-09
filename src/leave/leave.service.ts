@@ -27,12 +27,12 @@ export class LeaveService {
   }
 
   async getAllLeave() {
-    const leave = await this.leaveModel.find({ relations: ['user'] });
-
-    if (leave.length === 0) {
-      throw new NotFoundException('No Leave Request');
+    try {
+      const leave = await this.leaveModel.find({ relations: ['user'] });
+      return leave;
+    } catch (err) {
+      throw new BadRequestException(err.message || err);
     }
-    return leave;
   }
 
   async getLeaveById(id: number) {
