@@ -38,7 +38,7 @@ export class WorklogService {
 
   async getWorkLogId(workId: number) {
     try {
-      const work = await this.worklogModel.find({
+      const work = await this.worklogModel.findOne({
         where: { id: workId },
         relations: ['user'],
       });
